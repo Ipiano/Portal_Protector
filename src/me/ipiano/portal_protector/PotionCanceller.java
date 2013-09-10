@@ -16,8 +16,10 @@ import org.bukkit.event.entity.PotionSplashEvent;
 
 /**
  *
- * @author Andrew
+ * @author Ipiano
  */
+
+//Class cancels player potion effects
 public class PotionCanceller implements Listener {
     public static PortalProtector plugin;
     public PotionCanceller(PortalProtector instance)
@@ -25,6 +27,7 @@ public class PotionCanceller implements Listener {
         plugin = instance;
     }
     
+    //Makes a list of affected players anytime a potion splashes
     @EventHandler
     public void onMakeSplash(PotionSplashEvent event){
         Entity entity = event.getEntity();
@@ -43,6 +46,10 @@ public class PotionCanceller implements Listener {
                 }
                 validEvent = true;
             }
+            
+            //If any players are affected, checks if any are in range of a portal
+            //If the thrower is in range of a portal, all effects on players are nullified
+            //If it would affects player(s) near a portal, only that player(s) will have the effect nullified
             if(validEvent){
                 Player[] finalPlrs = plrsAffected.toArray(new Player[plrsAffected.size()]);
                 if(plugin.inRangeOfPortal(damager.getLocation())){
@@ -51,7 +58,6 @@ public class PotionCanceller implements Listener {
                     for (int i = 0; i < finalPlrs.length; i++){
                         event.setIntensity(finalPlrs[i], 0);
                     }
-                    event.setCancelled(true);
                 }else{
                     boolean message = false;
                     for(int i = 0; i < finalPlrs.length; i++){

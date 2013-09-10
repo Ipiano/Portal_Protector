@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package me.ipiano.portal_protector;
 
 import java.util.logging.Logger;
@@ -12,9 +8,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  *
- * @author Andrew
+ * @author Ipiano
  */
+
+//Main class, registers all events which must be modified
 public class PortalProtector extends JavaPlugin {
+    //Distance away from portal for most effects
     private final int RADIUS = 2;
 
     public static final Logger m_log = Logger.getLogger("Minecraft");
@@ -23,6 +22,8 @@ public class PortalProtector extends JavaPlugin {
     public void onEnable(){
         m_log.info("PortalProtector is active");
         PluginManager manager = getServer().getPluginManager();
+        
+        //Registers the listener classes
         manager.registerEvents(new DamageListener(this), this);
         manager.registerEvents(new PotionCanceller(this), this);  
         manager.registerEvents(new FireCanceller(this), this);    
@@ -38,21 +39,12 @@ public class PortalProtector extends JavaPlugin {
         getLogger().info("PortalProtector is inactive");        
     }
     
+    
+    //Method to check if a location is in range of a portal, default distance is the RADIUS constant
     public boolean inRangeOfPortal(Location location){
         return inRangeOfPortal(location, RADIUS, RADIUS, RADIUS);
     }
     public boolean inRangeOfPortal(Location location, int xVar, int yVar, int zVar){
-        //Location locationAhead = location.getBlock().getRelative(getPlayerFacing(player), 20).getLocation();
-        /*for (int x = -(RADIUS); x <= RADIUS; x++){
-            for (int y = -(RADIUS); y <= RADIUS; y++){
-                for (int z = -(RADIUS); z <= RADIUS; z++){
-                    Location loc = locationAhead.getBlock().getRelative(x, y, z).getLocation();
-                    if (!getTransparentMaterials().contains(loc.getBlock().getType())){
-                            player.sendBlockChange(loc, Material.SNOW_BLOCK.getId(), (byte) 0);
-                    }
-                }
-            }
-        }*/
         for (int x = -(xVar); x <= xVar; x++){
             for (int y = -(yVar); y <= yVar; y++){
                 for (int z = -(zVar); z <= zVar; z++){

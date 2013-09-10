@@ -20,8 +20,10 @@ import org.bukkit.potion.PotionEffect;
 
 /**
  *
- * @author Andrew
+ * @author Ipiano
  */
+
+//Class prevents player-caused melee and projectile damage
 public class DamageListener implements Listener {
     public static PortalProtector plugin;
     public DamageListener(PortalProtector instance)
@@ -35,10 +37,14 @@ public class DamageListener implements Listener {
         boolean validEvent = false;
         Player player = null;
         Player damager = null;
+        
+        //If it was melee damage, flag the player and damager
         if(entity instanceof Player && event.getDamager() instanceof Player){
             player = (Player)entity;
             damager = (Player)event.getDamager();
             validEvent = true;
+            
+        //If it was projectile damage, flag the player and the shooter of the projectile
         }else if(event.getDamager() instanceof Projectile){
             Projectile project = (Projectile) event.getDamager();
             if(entity instanceof Player && project.getShooter() instanceof Player){
@@ -49,6 +55,9 @@ public class DamageListener implements Listener {
             }
         }
         if(validEvent){
+            
+            //If either player is in range of a portal, and the damager and damagee were players, cancel the damage
+            
             if(plugin.inRangeOfPortal(player.getLocation()) || plugin.inRangeOfPortal(damager.getLocation())){
                 //PortalProtector.m_log.info("Player [" + player.getDisplayName() + "] is near a portal; negating " + event.getDamage() + " damage");
                 damager.sendMessage(ChatColor.DARK_RED + "You cannot attack this player right now, one of you is too close to a portal.");

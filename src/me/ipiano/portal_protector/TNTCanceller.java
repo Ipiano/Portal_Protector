@@ -12,8 +12,10 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 
 /**
  *
- * @author Andrew
+ * @author Ipiano
  */
+
+//Class cancels the explosion from TNT near portals, the TNT is removed, but does not cause damage
 public class TNTCanceller implements Listener {
     public static PortalProtector plugin;
     public TNTCanceller(PortalProtector instance)

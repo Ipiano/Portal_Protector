@@ -14,22 +14,25 @@ import org.bukkit.event.block.BlockIgniteEvent;
 
 /**
  *
- * @author Andrew
+ * @author Ipiano
  */
+
+//Class cancels fire near portals
 public class FireCanceller implements Listener {
     public static PortalProtector plugin;
     public FireCanceller(PortalProtector instance)
     {
         plugin = instance;
     }
-    
+
+    //If a player tries to light a fire next to a portal, it's canceled
     @EventHandler
     public void onBurn(BlockIgniteEvent event){
         Entity entity = event.getPlayer();
         if(null != entity){
             Player plr = (Player)entity;
             Location loc = event.getBlock().getLocation();
-            if(plugin.inRangeOfPortal(loc)){
+            if(plugin.inRangeOfPortal(loc, 1,1,1)){
                 event.setCancelled(true);
                 plr.sendMessage(ChatColor.DARK_RED + "You can't start a fire that close to a portal.");
             }
