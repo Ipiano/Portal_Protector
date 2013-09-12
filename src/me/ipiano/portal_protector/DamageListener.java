@@ -60,7 +60,7 @@ public class DamageListener implements Listener {
 
                 if(plugin.inRangeOfPortal(player.getLocation()) || plugin.inRangeOfPortal(damager.getLocation())){
                         //PortalProtector.m_log.info("Player [" + player.getDisplayName() + "] is near a portal; negating " + event.getDamage() + " damage");
-                        damager.sendMessage(ChatColor.DARK_RED + "You cannot attack this player right now, one of you is too close to a portal.");
+                        plugin.notifyPlayer(damager, ChatColor.DARK_RED + "You cannot attack this player right now, one of you is too close to a portal.");
                         event.setCancelled(true);
                 }
             }

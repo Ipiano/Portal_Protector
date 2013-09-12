@@ -57,7 +57,7 @@ public class PotionCanceller implements Listener {
                     Player[] finalPlrs = plrsAffected.toArray(new Player[plrsAffected.size()]);
                     if(plugin.inRangeOfPortal(damager.getLocation())){
                         //PortalProtector.m_log.info("Player [" + player.getDisplayName() + "] is near a portal; negating " + event.getDamage() + " damage");
-                        damager.sendMessage(ChatColor.DARK_RED + "You cannot attack this player right now, you are too close to a portal.");
+                        plugin.notifyPlayer(damager, ChatColor.DARK_RED + "You cannot attack this player right now, you are too close to a portal.");
                         for (int i = 0; i < finalPlrs.length; i++){
                             event.setIntensity(finalPlrs[i], 0);
                         }
@@ -70,7 +70,7 @@ public class PotionCanceller implements Listener {
                             }
                         }
                         if (message){
-                            damager.sendMessage(ChatColor.DARK_RED + "Some players were not affected by the potion because they were near a portal.");
+                            plugin.notifyPlayer(damager, ChatColor.DARK_RED + "Some players were not affected by the potion because they were near a portal.");
                         }
                     }
 

@@ -36,7 +36,8 @@ public class FireCanceller implements Listener {
                 Location loc = event.getBlock().getLocation();
                 if(plugin.inRangeOfPortal(loc, 1,1,1)){
                         event.setCancelled(true);
-                        plr.sendMessage(ChatColor.DARK_RED + "You can't start a fire that close to a portal.");
+                        plugin.notifyPlayer(plr,ChatColor.DARK_RED + "You can't start a fire that close to a portal.");
+                        plr.updateInventory();
                 }
             }
         }

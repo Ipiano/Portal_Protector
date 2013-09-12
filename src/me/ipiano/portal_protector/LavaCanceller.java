@@ -36,10 +36,14 @@ public class LavaCanceller implements Listener {
             if(event.getBucket() == Material.LAVA_BUCKET){
                 if(null != entity){
                     Player plr = (Player)entity;
-                    Location loc = event.getBlockClicked().getLocation().subtract(event.getBlockFace().getModX(), event.getBlockFace().getModY(),event.getBlockFace().getModZ());
-                    if(plugin.inRangeOfPortal(loc)){
+                    Location loc = event.getBlockClicked().getLocation().add(event.getBlockFace().getModX(), event.getBlockFace().getModY(),event.getBlockFace().getModZ());
+                    if(loc.getBlock().getType() == Material.PORTAL && !plugin.isPlayerInPortal(loc, 1,1,1)){
+                        //Allows breaking of portals with lava when players are not in them
+                    }else if(plugin.inRangeOfPortal(loc) || event.getBlockClicked().getType() == Material.PORTAL){
                             event.setCancelled(true);
-                            plr.sendMessage(ChatColor.DARK_RED + "You can't put lava there, it's too close to a portal!");
+                            plr.sendBlockChange(loc, Material.AIR, loc.getBlock().getData());
+                            plugin.notifyPlayer(plr,ChatColor.DARK_RED + "You can't put lava there, it's too close to a portal!");
+                            plr.updateInventory();
                     }
                 }
             }
