@@ -20,6 +20,8 @@ import org.bukkit.event.block.BlockFromToEvent;
 //Class stops and removes lava near portals
 public class LavaStopper implements Listener {
     public static PortalProtector plugin;
+    public static String path = "protection.lavaflow";
+    
     public LavaStopper(PortalProtector instance)
     {
         plugin = instance;
@@ -30,13 +32,15 @@ public class LavaStopper implements Listener {
     //Will remove pre-existing lava from near portals over time, but only if the lava is disturbed, causing a reason for it to flow
     @EventHandler
     public void onFlow(BlockFromToEvent event){
-        Material startType = event.getBlock().getType();
-        Material lava = Material.STATIONARY_LAVA;
-        Material lavaFlow = Material.LAVA;
-        
-        if((startType == lava || startType == lavaFlow) && plugin.inRangeOfPortal(event.getBlock().getLocation())){
-            event.getBlock().setType(Material.AIR);
-            event.setCancelled(true);
+        if(plugin.getProperties().getBoolean(path)){
+            Material startType = event.getBlock().getType();
+            Material lava = Material.STATIONARY_LAVA;
+            Material lavaFlow = Material.LAVA;
+
+            if((startType == lava || startType == lavaFlow) && plugin.inRangeOfPortal(event.getBlock().getLocation())){
+                    event.getBlock().setType(Material.AIR);
+                    event.setCancelled(true);
+            }
         }
     }  
 }

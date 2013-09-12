@@ -22,6 +22,10 @@ import org.bukkit.event.block.BlockPlaceEvent;
 //Class prevents players from placing blocks next to a portal at times
 public class BlockStopper implements Listener {
     public static PortalProtector plugin;
+    public static String blockpath = "protection.blockplace";
+    public static String obsidianpath = "protection.obsidianplace";
+    
+
     public BlockStopper(PortalProtector instance)
     {
         plugin = instance;
@@ -32,26 +36,28 @@ public class BlockStopper implements Listener {
         Player plr = event.getPlayer();
         Location loc = event.getBlock().getLocation();
         if(plugin.inRangeOfPortal(loc, 1,0,0) || plugin.inRangeOfPortal(loc, 0,0,1)){
-            if(event.getBlock().getType() == Material.OBSIDIAN){
+            if(event.getBlock().getType() == Material.OBSIDIAN && plugin.getProperties().getBoolean(obsidianpath)){
                 
                 //Prevent any obsidian being placed 1 away from a portal block
                 
                 event.setCancelled(true);
                 plr.sendMessage(ChatColor.DARK_RED + "You can't put obsidan that close to a portal!");
             }else{
-                double radius = 2;
-                List<Entity> near = loc.getWorld().getEntities();
-                for(Entity e : near) {
-                    if(e.getLocation().distance(loc) <= radius && e instanceof Player){
-                        if(plugin.inRangeOfPortal(e.getLocation(), 0, 0, 0)){
-                            
-                            //Prevent any block being placed by a portal block if a nearby player is standing in a portal
-                            //Could potentially prevent unecessary blocks when portals are excessively close(1-3 blocks away)
-                            
-                            event.setCancelled(true);
-                            plr.sendMessage(ChatColor.DARK_RED + "You can't put blocks near a portal someone is in");
-                        }
-                    } 
+                if(plugin.getProperties().getBoolean(blockpath)){
+                    double radius = 2;
+                    List<Entity> near = loc.getWorld().getEntities();
+                    for(Entity e : near) {
+                        if(e.getLocation().distance(loc) <= radius && e instanceof Player){
+                            if(plugin.inRangeOfPortal(e.getLocation(), 0, 0, 0)){
+
+                                //Prevent any block being placed by a portal block if a nearby player is standing in a portal
+                                //Could potentially prevent unecessary blocks when portals are excessively close(1-3 blocks away)
+
+                                event.setCancelled(true);
+                                plr.sendMessage(ChatColor.DARK_RED + "You can't put blocks near a portal someone is in");
+                            }
+                        } 
+                    }
                         
                 }
             }

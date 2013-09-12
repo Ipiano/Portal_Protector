@@ -18,6 +18,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 //Class cancels the explosion from TNT near portals, the TNT is removed, but does not cause damage
 public class TNTCanceller implements Listener {
     public static PortalProtector plugin;
+    public static String path = "protection.tntexplode";
     public TNTCanceller(PortalProtector instance)
     {
         plugin = instance;
@@ -25,9 +26,11 @@ public class TNTCanceller implements Listener {
     
     @EventHandler
     public void onPrime(EntityExplodeEvent event){
-        Entity thisPrime = event.getEntity();
-        if(thisPrime.getType() == EntityType.PRIMED_TNT && plugin.inRangeOfPortal(thisPrime.getLocation(), 7,7,7)){
-            event.setCancelled(true);
+        if(plugin.getProperties().getBoolean(path)){
+          Entity thisPrime = event.getEntity();
+            if(thisPrime.getType() == EntityType.PRIMED_TNT && plugin.inRangeOfPortal(thisPrime.getLocation(), 7,7,7)){
+                event.setCancelled(true);
+            }
         }
 
     }      

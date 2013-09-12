@@ -21,6 +21,8 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 //Stops placeing of lava near portals
 public class LavaCanceller implements Listener {
     public static PortalProtector plugin;
+    public static String path = "protection.lavaplace";
+    
     public LavaCanceller(PortalProtector instance)
     {
         plugin = instance;
@@ -29,14 +31,16 @@ public class LavaCanceller implements Listener {
     //If the player tries to put lava near a portal, it is cancelled, and the player does not get lava back
     @EventHandler
     public void onDrop(PlayerBucketEmptyEvent event){
-        Entity entity = event.getPlayer();
-        if(event.getBucket() == Material.LAVA_BUCKET){
-            if(null != entity){
-                Player plr = (Player)entity;
-                Location loc = event.getBlockClicked().getLocation().subtract(event.getBlockFace().getModX(), event.getBlockFace().getModY(),event.getBlockFace().getModZ());
-                if(plugin.inRangeOfPortal(loc)){
-                    event.setCancelled(true);
-                    plr.sendMessage(ChatColor.DARK_RED + "You can't put lava there, it's too close to a portal!");
+        if(plugin.getProperties().getBoolean(path)){
+            Entity entity = event.getPlayer();
+            if(event.getBucket() == Material.LAVA_BUCKET){
+                if(null != entity){
+                    Player plr = (Player)entity;
+                    Location loc = event.getBlockClicked().getLocation().subtract(event.getBlockFace().getModX(), event.getBlockFace().getModY(),event.getBlockFace().getModZ());
+                    if(plugin.inRangeOfPortal(loc)){
+                            event.setCancelled(true);
+                            plr.sendMessage(ChatColor.DARK_RED + "You can't put lava there, it's too close to a portal!");
+                    }
                 }
             }
         }
